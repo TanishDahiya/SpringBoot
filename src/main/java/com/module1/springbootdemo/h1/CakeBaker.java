@@ -1,13 +1,16 @@
 package com.module1.springbootdemo.h1;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(name = "type.food",havingValue = "choco")
 public class CakeBaker {
 
     private Frosting frosting;
     private Syrup syrup;
+
     public CakeBaker(@Qualifier("chocolateFrosting") Frosting frosting,@Qualifier("chocolateSyrup") Syrup syrup) {
         this.frosting = frosting;
         this.syrup = syrup;
