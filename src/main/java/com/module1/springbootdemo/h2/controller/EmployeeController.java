@@ -1,16 +1,14 @@
 package com.module1.springbootdemo.h2.controller;
 
 import com.module1.springbootdemo.h2.dto.EmployeeDto;
-import com.module1.springbootdemo.h2.entity.Employee;
 import com.module1.springbootdemo.h2.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityReturnValueHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(path = "/employee")
@@ -28,7 +26,7 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/postUser")
-    public ResponseEntity<EmployeeDto> postEmployee(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> postEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
         return new ResponseEntity<>(employeeService.postEmployee(employeeDto),  HttpStatus.CREATED);
     }
 
