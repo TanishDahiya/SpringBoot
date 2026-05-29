@@ -2,16 +2,20 @@ package com.module1.springbootdemo.h2.service;
 
 import com.module1.springbootdemo.h2.dto.EmployeeDto;
 import com.module1.springbootdemo.h2.entity.Employee;
+import com.module1.springbootdemo.h2.exception.ResourceNotFoundException;
 import com.module1.springbootdemo.h2.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -26,8 +30,9 @@ public class EmployeeService {
         this .modelMapper = modelMapper;
     }
 
+
     public EmployeeDto getEmployee(Long id){
-        Employee employee =  employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
+        Employee employee =  employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not found id : "+id));
         EmployeeDto employeeDto =  modelMapper.map(employee, EmployeeDto.class);
         return employeeDto;
     }
