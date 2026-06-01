@@ -12,24 +12,24 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiAdvice> handleEmployeeNotFound(ResourceNotFoundException exception){
-       ApiAdvice apiAdvice = ApiAdvice.builder()
+    public ResponseEntity<ApiResponse> handleEmployeeNotFound(ResourceNotFoundException exception){
+       ApiError apiError = ApiError.builder()
                .status(HttpStatus.NOT_FOUND)
                .message(exception.getMessage())
                .build();
-       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiAdvice);
+       return buildResponseEntity(apiError);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiAdvice> handleInternalServerError(Exception exception){
-        ApiAdvice apiAdvice = ApiAdvice.builder()
+    public ResponseEntity<ApiResponse> handleInternalServerError(Exception exception){
+        ApiError apiError = ApiError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message(exception.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiAdvice);
+        return buildResponseEntity(apiError);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiAdvice> handleInputValidationError(MethodArgumentNotValidException exception ){
+    public ResponseEntity<ApiResponse> handleInputValidationError(MethodArgumentNotValidException exception ){
         List<String> errors = exception
                 .getBindingResult()
                 .getAllErrors()
@@ -37,14 +37,20 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getDefaultMessage())
                 .toList();
 
-        ApiAdvice apiAdvice = ApiAdvice
+        ApiError apiError = ApiError
                 .builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .message("Input Validation Failed")
                 .subErrors(errors)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiAdvice);
+        return buildResponseEntity(apiError);
+    }
+
+    private ResponseEntity<ApiResponse> buildResponseEntity(ApiError apiError) {
+        ApiResponse apiResponse = new ApiResponse(apiError);
+        return ResponseEntity.status(apiError.getStatus()).body(apiResponse);
+
     }
 
 }
