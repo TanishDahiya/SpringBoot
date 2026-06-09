@@ -1,0 +1,33 @@
+package com.module1.springbootdemo.h3.controller;
+
+import com.module1.springbootdemo.h3.dto.StudentRequestDto;
+import com.module1.springbootdemo.h3.dto.StudentResponseDto;
+import com.module1.springbootdemo.h3.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/student")
+public class StudentController {
+
+    private final StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @PostMapping("/addStudent")
+    public ResponseEntity<StudentResponseDto> addStudent(@RequestBody StudentRequestDto student) {
+        StudentResponseDto savedStudent = studentService.save(student);
+        return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getStudentByLastName/{lastName}")
+    public ResponseEntity<List<StudentResponseDto>> getStudentByLastName(@PathVariable String lastName){
+        List<StudentResponseDto> responseDtos =  studentService.getStudentByLastName(lastName);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
+}
