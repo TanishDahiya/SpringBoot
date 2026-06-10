@@ -5,6 +5,8 @@ import com.module1.springbootdemo.h3.dto.StudentResponseDto;
 import com.module1.springbootdemo.h3.entity.Student;
 import com.module1.springbootdemo.h3.repository.StudentRepo;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Service
 public class StudentService {
+
+    private final int PAGE_SIZE = 2;
 
     private final StudentRepo studentRepo;
 
@@ -51,11 +55,28 @@ public class StudentService {
 
     }
 
-    public List<StudentResponseDto> findAllSortByAadharNumber(String sortBy) {
-        List<Student> students = studentRepo.findAll(Sort.by(Sort.Direction.DESC,sortBy));
-        List<StudentResponseDto> studentsDto = students.stream()
-                .map(student -> modelMapper.map(student,StudentResponseDto.class))
-                .toList();
-        return studentsDto;
+//    public List<StudentResponseDto> findAllSortByAadharNumber(String sortBy) {
+//        List<Student> students = studentRepo.findAll(Sort.by(Sort.Direction.DESC,sortBy));
+//        List<StudentResponseDto> studentsDto = students.stream()
+//                .map(student -> modelMapper.map(student,StudentResponseDto.class))
+//                .toList();
+//        return studentsDto;
+//    }
+
+
+        public List<StudentResponseDto> findAllSortByAadharNumber(Pageable pageable) {
+            Pageable pages = PageRequest.of(
+                    pageable.getPageNumber(),
+                    PAGE_SIZE,
+//                    Sort.by(Sort.Direction.DESC, "aadharNumber") - if we can pass from URL then always it can sort base on AADHAR
+                    pageable.getSort()
+            );
+            List<Student> students = studentRepo.findAll(pages).getContent();
+            List<StudentResponseDto> studentDto = students.stream()
+                    .map(student -> modelMapper.map(student,StudentResponseDto.class))
+                    .toList();
+
+            return studentDto;
+
     }
 }
