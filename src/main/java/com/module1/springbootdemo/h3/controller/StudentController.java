@@ -61,4 +61,11 @@ public class StudentController {
         return new ResponseEntity<>(students,HttpStatus.OK);
     }
 
+
+    @GetMapping("/allStudentProjection")
+    public ResponseEntity<List<StudentResponseDto>> findAllStudentProjection(){
+        List<StudentResponseDto> students = studentService.findAllStudentProjection();
+        return new ResponseEntity<>(students,HttpStatus.OK);
+    }
+
 }

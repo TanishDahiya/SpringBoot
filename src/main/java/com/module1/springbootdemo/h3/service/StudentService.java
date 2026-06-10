@@ -1,5 +1,7 @@
 package com.module1.springbootdemo.h3.service;
 
+import com.module1.springbootdemo.h3.dto.StudentConcrete;
+import com.module1.springbootdemo.h3.dto.StudentProjectionInterface;
 import com.module1.springbootdemo.h3.dto.StudentRequestDto;
 import com.module1.springbootdemo.h3.dto.StudentResponseDto;
 import com.module1.springbootdemo.h3.entity.Student;
@@ -79,4 +81,28 @@ public class StudentService {
             return studentDto;
 
     }
+
+    // This projection method is using with Concrete class
+
+//    public List<StudentResponseDto> findAllStudentProjection() {
+//        List<StudentConcrete> students = studentRepo.findAllStudent();
+//        List<StudentResponseDto> studentResponseDtos = students.stream()
+//                .map(student -> modelMapper.map(student,StudentResponseDto.class))
+//                .toList();
+//
+//        return studentResponseDtos;
+//
+//    }
+
+    //This projection method is using with Interface
+
+    public List<StudentResponseDto> findAllStudentProjection() {
+        List<StudentProjectionInterface> students = studentRepo.findAllStudent();
+        List<StudentResponseDto> studentResponseDtos = students.stream()
+                .map(student -> modelMapper.map(student,StudentResponseDto.class))
+                .toList();
+        return studentResponseDtos;
+    }
+
+
 }
