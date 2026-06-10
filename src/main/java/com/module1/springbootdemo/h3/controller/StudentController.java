@@ -30,4 +30,16 @@ public class StudentController {
         List<StudentResponseDto> responseDtos =  studentService.getStudentByLastName(lastName);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/getByFirstNameMatchWithString/{firstName}")
+    public ResponseEntity<List<StudentResponseDto>> getByFirstNameMatchWithString(@PathVariable String firstName){
+        List<StudentResponseDto> students  = studentService.getByFirstNameMatchWithString(firstName);
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllSortByAaadharNumber")
+    public ResponseEntity<List<StudentResponseDto>> findAllSortByAadharNumber(@RequestParam(defaultValue = "id") String sortBy){
+        List<StudentResponseDto> students = studentService.findAllSortByAadharNumber(sortBy);
+        return new ResponseEntity<>(students,HttpStatus.OK);
+    }
 }

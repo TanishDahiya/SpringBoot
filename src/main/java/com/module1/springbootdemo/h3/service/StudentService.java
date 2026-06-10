@@ -5,6 +5,7 @@ import com.module1.springbootdemo.h3.dto.StudentResponseDto;
 import com.module1.springbootdemo.h3.entity.Student;
 import com.module1.springbootdemo.h3.repository.StudentRepo;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,5 +39,23 @@ public class StudentService {
                 .toList();
 
         return studentResponseDtos;
+    }
+
+    public List<StudentResponseDto> getByFirstNameMatchWithString(String firstName) {
+
+        List<Student> students = studentRepo.findByFirstNameMatchWithString(firstName);
+        List<StudentResponseDto> studentDto = students.stream()
+                .map(student -> modelMapper.map(student, StudentResponseDto.class))
+                .toList();
+        return studentDto;
+
+    }
+
+    public List<StudentResponseDto> findAllSortByAadharNumber(String sortBy) {
+        List<Student> students = studentRepo.findAll(Sort.by(Sort.Direction.DESC,sortBy));
+        List<StudentResponseDto> studentsDto = students.stream()
+                .map(student -> modelMapper.map(student,StudentResponseDto.class))
+                .toList();
+        return studentsDto;
     }
 }
