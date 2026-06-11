@@ -6,6 +6,7 @@ import com.module1.springbootdemo.h3.dto.StudentRequestDto;
 import com.module1.springbootdemo.h3.dto.StudentResponseDto;
 import com.module1.springbootdemo.h3.entity.Student;
 import com.module1.springbootdemo.h3.repository.StudentRepo;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -66,19 +68,19 @@ public class StudentService {
 //    }
 
 
-        public List<StudentResponseDto> findAllSortByAadharNumber(Pageable pageable) {
-            Pageable pages = PageRequest.of(
-                    pageable.getPageNumber(),
-                    PAGE_SIZE,
+    public List<StudentResponseDto> findAllSortByAadharNumber(Pageable pageable) {
+        Pageable pages = PageRequest.of(
+                pageable.getPageNumber(),
+                PAGE_SIZE,
 //                    Sort.by(Sort.Direction.DESC, "aadharNumber") - if we can pass from URL then always it can sort base on AADHAR
-                    pageable.getSort()
-            );
-            List<Student> students = studentRepo.findAll(pages).getContent();
-            List<StudentResponseDto> studentDto = students.stream()
-                    .map(student -> modelMapper.map(student,StudentResponseDto.class))
-                    .toList();
+                pageable.getSort()
+        );
+        List<Student> students = studentRepo.findAll(pages).getContent();
+        List<StudentResponseDto> studentDto = students.stream()
+                .map(student -> modelMapper.map(student,StudentResponseDto.class))
+                .toList();
 
-            return studentDto;
+        return studentDto;
 
     }
 
@@ -104,5 +106,15 @@ public class StudentService {
         return studentResponseDtos;
     }
 
+    @Transactional
+    public void getStudentById(Long id) {
+        Student student1 = studentRepo.findById(id).get();
+        Student student2 = studentRepo.findById(id).get();
+        System.out.print(student1 == student2);
 
+        // So this value updated because it is dirtied, that means it is updated in the persistence context
+        //so when this transaction closed, means this method complted then persistence context syncs with the DB
+        // that is having dirtied values then this will update to DB
+        student1.setFirstName("UpdatedName");
+    }
 }

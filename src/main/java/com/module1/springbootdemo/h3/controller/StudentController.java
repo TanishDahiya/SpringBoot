@@ -68,4 +68,10 @@ public class StudentController {
         return new ResponseEntity<>(students,HttpStatus.OK);
     }
 
+    // Transaction and persistence context
+    @GetMapping("/getStudentById/{id}")
+    public void getStudentById(@PathVariable Long id){
+        studentService.getStudentById(id);
+    }
+
 }
