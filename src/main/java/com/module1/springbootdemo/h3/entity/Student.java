@@ -45,7 +45,7 @@ public class Student {
     )
     private List<Subject> subjects;
 
-    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL) // Added CASCADED
     private AdmissionRecord admissionRecord;
 
 }

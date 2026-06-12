@@ -116,6 +116,7 @@ public class StudentService {
         student1.setFirstName("UpdatedName");
     }
 
+    //Assuming student is already in DB
     @Transactional
     public AdmissionRecordResponseDto newAdmissionStudentRecord(AdmissionRecord admissionRecord, Long id) {
 
@@ -129,6 +130,24 @@ public class StudentService {
 
         return admissionRecordResponseDto;
 
+    }
 
+    @Transactional
+    public StudentAdmissionResposneDto studentNewAdmission(StudentAdmissionRequestDto studentAdmissionRequestDto) {
+        Student student = new Student();
+        student.setFirstName(studentAdmissionRequestDto.getFirstName());
+        student.setLastName(studentAdmissionRequestDto.getLastName());
+        student.setEmail(studentAdmissionRequestDto.getEmail());
+        student.setAadharNumber(studentAdmissionRequestDto.getAadharNumber());
+        AdmissionRecord admissionRecord = new AdmissionRecord();
+        admissionRecord.setAdmissionNumber(studentAdmissionRequestDto.getAdmissionNumber());
+        admissionRecord.setAdmissionStatus(studentAdmissionRequestDto.isAdmissionStatus());
+
+        student.setAdmissionRecord(admissionRecord);
+        admissionRecord.setStudent(student);
+
+        studentRepo.save(student);
+
+        return modelMapper.map(admissionRecord, StudentAdmissionResposneDto.class);
     }
 }

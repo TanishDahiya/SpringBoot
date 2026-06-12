@@ -1,8 +1,6 @@
 package com.module1.springbootdemo.h3.controller;
 
-import com.module1.springbootdemo.h3.dto.AdmissionRecordResponseDto;
-import com.module1.springbootdemo.h3.dto.StudentRequestDto;
-import com.module1.springbootdemo.h3.dto.StudentResponseDto;
+import com.module1.springbootdemo.h3.dto.*;
 import com.module1.springbootdemo.h3.entity.AdmissionRecord;
 import com.module1.springbootdemo.h3.service.StudentService;
 import org.springframework.data.domain.Pageable;
@@ -81,6 +79,12 @@ public class StudentController {
     public ResponseEntity<AdmissionRecordResponseDto> newAdmissionStudentRecord(@RequestBody AdmissionRecord admissionRecord,@PathVariable Long id){
         AdmissionRecordResponseDto responseDto = studentService.newAdmissionStudentRecord(admissionRecord,id);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/studentAdmission")
+    public ResponseEntity<StudentAdmissionResposneDto> newStudentAdmission(@RequestBody StudentAdmissionRequestDto studentAdmissionRequestDto){
+        StudentAdmissionResposneDto studentResponseDto = studentService.studentNewAdmission(studentAdmissionRequestDto);
+        return new ResponseEntity<>(studentResponseDto, HttpStatus.CREATED);
     }
 
 }
