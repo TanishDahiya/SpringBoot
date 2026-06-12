@@ -4,6 +4,7 @@ import com.module1.springbootdemo.h3.dto.StudentProjectionInterface;
 import com.module1.springbootdemo.h3.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -41,6 +42,28 @@ public interface StudentRepo extends JpaRepository<Student, Long> {
        from Student e
        """)
     List<StudentProjectionInterface> findAllStudent();
+
+
+    //N+1 problem
+    //Method 1 with cutom query @JsonIgnore with change of set to the Bag Exception
+    @Query("""
+    SELECT DISTINCT s
+    FROM Student s
+    LEFT JOIN FETCH s.admissionRecord
+    LEFT JOIN FETCH s.subjects
+    LEFT JOIN FETCH s.professors
+    """)
+    List<Student> findAllWithEverything();
+
+    //Method just entity graph
+    @EntityGraph(attributePaths = {
+            "admissionRecord",
+            "professors",
+            "subjects"
+    })
+    List<Student> findAll();
+
+    //Method 3 DTO example is already above
 
 
 }

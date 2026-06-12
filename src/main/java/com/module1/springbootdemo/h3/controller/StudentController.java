@@ -2,6 +2,7 @@ package com.module1.springbootdemo.h3.controller;
 
 import com.module1.springbootdemo.h3.dto.*;
 import com.module1.springbootdemo.h3.entity.AdmissionRecord;
+import com.module1.springbootdemo.h3.entity.Student;
 import com.module1.springbootdemo.h3.service.StudentService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -90,6 +91,12 @@ public class StudentController {
     @DeleteMapping("/deleteStudent/{id}")
     public void deleteStudent(@PathVariable Long id){
         studentService.deleteStudent(id);
+    }
+
+    @GetMapping("/fetchingAllStudentsNplusoneProblem")
+    public ResponseEntity<List<Student>> getAllStudentsNplusoneProblem(){
+        List<Student> students = studentService.getAllStudentsNplusoneProblem();
+        return new ResponseEntity<>(students,HttpStatus.OK);
     }
 
 }

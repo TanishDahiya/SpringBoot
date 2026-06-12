@@ -156,4 +156,9 @@ public class StudentService {
         Student student = studentRepo.findById(id).get();
         studentRepo.delete(student);
     }
+
+    public List<Student> getAllStudentsNplusoneProblem() {
+        List<Student> student = studentRepo.findAll();
+        return student;
+    }
 }

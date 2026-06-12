@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -31,6 +32,7 @@ public class Student {
     private StudentEnum isActive = StudentEnum.ACTIVE;;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "student_professor",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -39,12 +41,13 @@ public class Student {
     private List<Professor> professors;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "student_subject",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
-    private List<Subject> subjects;
+    private Set<Subject> subjects;;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL) // Added CASCADED
     @JsonIgnore
