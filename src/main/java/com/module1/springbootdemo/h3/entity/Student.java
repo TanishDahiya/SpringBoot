@@ -1,5 +1,6 @@
 package com.module1.springbootdemo.h3.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.module1.springbootdemo.h3.commonlibs.enums.StudentEnum;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -46,6 +47,7 @@ public class Student {
     private List<Subject> subjects;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL) // Added CASCADED
+    @JsonIgnore
     private AdmissionRecord admissionRecord;
 
 }

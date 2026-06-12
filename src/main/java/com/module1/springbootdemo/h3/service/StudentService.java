@@ -150,4 +150,10 @@ public class StudentService {
 
         return modelMapper.map(admissionRecord, StudentAdmissionResposneDto.class);
     }
+
+    @Transactional
+    public void deleteStudent(Long id) {
+        Student student = studentRepo.findById(id).get();
+        studentRepo.delete(student);
+    }
 }
