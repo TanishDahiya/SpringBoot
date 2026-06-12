@@ -1,7 +1,9 @@
 package com.module1.springbootdemo.h3.controller;
 
+import com.module1.springbootdemo.h3.dto.AdmissionRecordResponseDto;
 import com.module1.springbootdemo.h3.dto.StudentRequestDto;
 import com.module1.springbootdemo.h3.dto.StudentResponseDto;
+import com.module1.springbootdemo.h3.entity.AdmissionRecord;
 import com.module1.springbootdemo.h3.service.StudentService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -72,6 +74,13 @@ public class StudentController {
     @GetMapping("/getStudentById/{id}")
     public void getStudentById(@PathVariable Long id){
         studentService.getStudentById(id);
+    }
+
+    //Assuming student is already in DB
+    @PostMapping("admissionRecord/{id}")
+    public ResponseEntity<AdmissionRecordResponseDto> newAdmissionStudentRecord(@RequestBody AdmissionRecord admissionRecord,@PathVariable Long id){
+        AdmissionRecordResponseDto responseDto = studentService.newAdmissionStudentRecord(admissionRecord,id);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
 }

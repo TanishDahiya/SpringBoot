@@ -1,9 +1,7 @@
 package com.module1.springbootdemo.h3.service;
 
-import com.module1.springbootdemo.h3.dto.StudentConcrete;
-import com.module1.springbootdemo.h3.dto.StudentProjectionInterface;
-import com.module1.springbootdemo.h3.dto.StudentRequestDto;
-import com.module1.springbootdemo.h3.dto.StudentResponseDto;
+import com.module1.springbootdemo.h3.dto.*;
+import com.module1.springbootdemo.h3.entity.AdmissionRecord;
 import com.module1.springbootdemo.h3.entity.Student;
 import com.module1.springbootdemo.h3.repository.StudentRepo;
 import jakarta.transaction.Transactional;
@@ -113,8 +111,24 @@ public class StudentService {
         System.out.print(student1 == student2);
 
         // So this value updated because it is dirtied, that means it is updated in the persistence context
-        //so when this transaction closed, means this method complted then persistence context syncs with the DB
+        //so when this transaction closed, means this method completed then persistence context syncs with the DB
         // that is having dirtied values then this will update to DB
         student1.setFirstName("UpdatedName");
+    }
+
+    @Transactional
+    public AdmissionRecordResponseDto newAdmissionStudentRecord(AdmissionRecord admissionRecord, Long id) {
+
+        Student student = studentRepo.findById(id).orElseThrow(()-> new RuntimeException("User Not Found"+ id ));
+
+        //dirtied
+        student.setAdmissionRecord(admissionRecord);
+        admissionRecord.setStudent(student);
+
+        AdmissionRecordResponseDto admissionRecordResponseDto = modelMapper.map(admissionRecord, AdmissionRecordResponseDto.class);
+
+        return admissionRecordResponseDto;
+
+
     }
 }

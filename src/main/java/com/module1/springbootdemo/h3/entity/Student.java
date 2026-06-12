@@ -29,29 +29,23 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private StudentEnum isActive = StudentEnum.ACTIVE;;
 
-    // ManyToMany: Student <-> Professor (owning side)
-//    // Join table: student_professors
-//    @ManyToMany
-//    @JoinTable(
-//            name = "student_professors",
-//            joinColumns = @JoinColumn(name = "student_id"),
-//            inverseJoinColumns = @JoinColumn(name = "professor_id")
-//    )
-//    private List<Professor> professors;
-//
-//    // ManyToMany: Student <-> Subject (owning side)
-//    // Join table: student_subjects
-//    @ManyToMany
-//    @JoinTable(
-//            name = "student_subjects",
-//            joinColumns = @JoinColumn(name = "student_id"),
-//            inverseJoinColumns = @JoinColumn(name = "subject_id")
-//    )
-//    private List<Subject> subjects;
-//
-//    // OneToOne: Student <-> AdmissionRecord (inverse side)
-//    // AdmissionRecord owns the relationship with @JoinColumn
-//    @OneToOne(mappedBy = "student")
-//    private AdmissionRecord admissionRecord;
+    @ManyToMany
+    @JoinTable(
+            name = "student_professor",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "professor_id")
+    )
+    private List<Professor> professors;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_subject",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<Subject> subjects;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    private AdmissionRecord admissionRecord;
 
 }
