@@ -6,6 +6,7 @@ import com.module1.springbootdemo.h4.dto.EmployeeDtoRestClient;
 import com.module1.springbootdemo.h4.dto.EmployeeResponseDtoCliennt;
 import com.module1.springbootdemo.h4.dto.EmployeeResponseSingleDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -16,12 +17,6 @@ import java.util.List;
 public class EmployeeClientImpl implements EmployeeClient {
 
     private final RestClient restClient;
-
-    @Override
-    public EmployeeDtoRestClient postEmployee(EmployeeDtoRestClient employee) {
-        return null;
-
-    }
 
     @Override
     public EmployeeDtoRestClient getEmployee(Long id) {

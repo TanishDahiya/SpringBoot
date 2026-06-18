@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface EmployeeClient {
 
-    public EmployeeDtoRestClient postEmployee(EmployeeDtoRestClient employee);
     public EmployeeDtoRestClient getEmployee(Long id);
     public EmployeeDtoRestClient deleteEmployee(Long id);
     public EmployeeDtoRestClient updateEmployee(EmployeeDtoRestClient employee);
