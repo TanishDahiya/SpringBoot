@@ -17,8 +17,29 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     }
 
     @Override
-    public @Nullable Object beforeBodyWrite(@Nullable Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if(body instanceof ApiResponse<?>){
+    public Object beforeBodyWrite(
+            Object body,
+            MethodParameter returnType,
+            MediaType selectedContentType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            ServerHttpRequest request,
+            ServerHttpResponse response) {
+
+        String path = request.getURI().getPath();
+
+        // Swagger Endpoints
+        if (path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-ui")) {
+            return body;
+        }
+
+        // Actuator Endpoints (recommended)
+        if (path.startsWith("/actuator")) {
+            return body;
+        }
+
+        // Already wrapped
+        if (body instanceof ApiResponse<?>) {
             return body;
         }
 
